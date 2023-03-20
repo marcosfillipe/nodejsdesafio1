@@ -16,7 +16,7 @@ function checksExistsUserAccount(request, response, next) {
   const user = users.find((user) => user.username === username);
 
   if (!user) {
-    return response.status(404).json({ error: "Username not found" });
+    return response.status(404).json({ error: "Username not found!" });
   }
 
   request.user = user;
@@ -35,9 +35,9 @@ app.post("/users", (request, response) => {
   }
 
   users.push({
+    id: uuidv4(),
     name,
     username,
-    id: uuidv4(),
     todos: [],
   });
 
@@ -57,9 +57,9 @@ app.post("/todos", checksExistsUserAccount, (request, response) => {
   const todos = {
     id: uuidv4(),
     title,
-    created_at: new Date(),
-    deadline: new Date(deadline),
     done: false,
+    deadline: new Date(deadline),
+    created_at: new Date(),
   };
 
   user.todos.push(todos);
@@ -73,11 +73,11 @@ app.put("/todos/:id", checksExistsUserAccount, (request, response) => {
   const { user } = request;
 
   const todo = user.todos.find((todo) => {
-    return todo.id === Number(id);
+    return todo.id === id;
   });
 
   if (!todo) {
-    return response.status(404).json({ error: "ToDo não encontrada!" });
+    return response.status(404).json({ error: "ToDo not found!" });
   }
 
   todo.title = title;
@@ -91,11 +91,11 @@ app.patch("/todos/:id/done", checksExistsUserAccount, (request, response) => {
   const { user } = request;
 
   const todo = user.todos.find((todo) => {
-    return todo.id === Number(id);
+    return todo.id === id;
   });
 
   if (!todo) {
-    return response.status(404).json({ error: "ToDo não encontrada!" });
+    return response.status(404).json({ error: "ToDo not found!" });
   }
 
   todo.done = true;
