@@ -108,7 +108,7 @@ app.delete("/todos/:id", checksExistsUserAccount, (request, response) => {
   const { user } = request;
 
   const todo = user.todos.find((todo) => {
-    return todo.id === Number(id);
+    return todo.id === id;
   });
 
   user.todos.splice(todo, 1);
